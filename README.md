@@ -1,2 +1,2 @@
 # intel_ingest
- Setup requriements for Incorta Intelligent Ingest
+ Setup requirements for Incorta Intelligent Ingest
