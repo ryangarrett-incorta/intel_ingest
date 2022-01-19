@@ -1,3 +1,7 @@
 epel-release
 postgresql-devel
-python3-pip gcc-c++ python3-devel unixODBC-devel
+python3-pip 
+gcc-c++ 
+python3-devel 
+unixODBC-devel
+msodbcsql17

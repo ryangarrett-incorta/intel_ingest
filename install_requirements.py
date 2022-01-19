@@ -5,46 +5,66 @@ import subprocess
 import os
 import sys
 import platform
+import shutil
 
-os_type = platform.dist()
-os_dist = os_type[0]
-os_version = os_type[1] 
-os_number = os_version[0] 
-repoPath = (os.path.join("/etc/yum.repos.d/mssql-release.repo"))
+incorta_home = os.getenv('INCORTA_HOME')
+
+# osType = platform.dist()
+# osDist = osType[0]
+# osVersion = osType[1] 
+# os_number = osVersion[0] 
+# repoPath = (os.path.join("/etc/yum.repos.d/mssql-release.repo"))
 
 # fileYum = "yum_requirements.txt"
 # fileObj = open(fileYum)
-# yum_packages = fileObj.read().splitlines()
+# yumPackages = fileObj.read().splitlines()
 # fileObj.close()
 
 # filePip = "pip_requirements.txt"
 # fileObj = open(filePip)
-# pip_packages = fileObj.read().splitlines()
+# pipPackages = fileObj.read().splitlines()
 # fileObj.close()
 
 # subprocess.call(["pip", "install", "--upgrade", "pip"])
-# subprocess.call(["pip", "install", "pygrok"])
 # subprocess.call(["sudo", "yum", "remove", "unixODBC-utf16-devel"])
+# subprocess.call(["sudo", "ACCEPT_EULA=Y", "yum", "install", "-y", "msodbcsql17"])
 
-# for y in yum_packages:
+# #create syn directories
+synPath = (os.path.join(incorta_home, "IncortaNode/syn/"))
+print(synPath)
+print(incorta_home)
+# synLogs = (os.path.join(synPath, "logs"))
+# synConf = (os.path.join(synPath, "conf"))
+# subprocess.call(["sudo", "mkdir", "-p", synPath])
+# subprocess.call(["sudo", "mkdir", "-p", synLogs])
+# subprocess.call(["sudo", "mkdir", "-p", synConf])
+
+syn_files = ("./syn_files/")
+for f in os.listdir(syn_files):
+    print(f)
+    try:
+        shutil.copy(f, synPath)
+        print("Copied " + f + " to " + synPath)
+    except:
+        print("Error occurred while copying file: " + f)    
+        
+
+# for y in yumPackages:
 #     subprocess.call(["sudo", "yum", "install", "-y", y])
 
-# for p in pip_packages:
+# for p in pipPackages:
 #     subprocess.call(["python3", "-m", "pip", "install", p])
 
-if os_dist == "centos":
-   curl_url = 'https://packages.microsoft.com/config/centos/' + os_number + '/prod.repo'
-   curl_out = subprocess.getstatusoutput(curl_url)
-    #subprocess.call(["sudo", curl_url, ">", repoPath])
-   print(curl_url)
-   print(curl_out)
-   print('true')
-elif os_dist == "red hat":
-    curl_url = 'https://packages.microsoft.com/config/rhel/' + os_number + '/prod.repo'
-    #subprocess.call(["sudo",curl_url, ">", "/etc/yum.repos.d/mssql-release.repo"])
-    print(os_dist)
-else:
-    print('false')
-    print(os_dist)
-    print(type(os_dist))
+# if osDist == "centos":
+#    repo_url = 'https://packages.microsoft.com/config/centos/' + os_number + '/prod.repo'
+#    subprocess.call(["curl",repo_url])
+#    print('true')
+   
+# elif osDist == "red hat":
+#     curl_url = 'https://packages.microsoft.com/config/rhel/' + os_number + '/prod.repo'
+#     print(osDist)
+# else:
+#     print('false')
+#     print(osDist)
+#     print(type(osDist))
     
