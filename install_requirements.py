@@ -9,7 +9,7 @@ import shutil
 import time
 
 incorta_home = os.getenv('INCORTA_HOME')
-egg_file = "./"
+egg_file = (os.path.join("./incorta_synapse-*.egg"))
 
 osType = platform.dist()
 osDist = osType[0]
@@ -27,24 +27,26 @@ fileObj = open(filePip)
 pipPackages = fileObj.read().splitlines()
 fileObj.close()
 
+print(egg_file)
+
 # subprocess.call(["pip", "install", "--upgrade", "pip"])
 # subprocess.call(["sudo", "yum", "remove", "unixODBC-utf16-devel"])
 # subprocess.call(["sudo", "ACCEPT_EULA=Y", "yum", "install", "-y", "msodbcsql17"])
-subprocess.call(["sudo", "su", "-"])
-time.sleep(2)
-print("sleeping")
-subprocess.call(["curl", "https://packages.microsoft.com/config/rhel/7/prod.repo" ">" "/etc/yum.repos.d/mssql-release.repo"])
-time.sleep(2)   
-subprocess.call(["exit"])
+#subprocess.call(["sudo", "su", "-"])
+# time.sleep(2)
+# print("sleeping")
+# subprocess.call(["curl", "https://packages.microsoft.com/config/rhel/7/prod.repo" ">" "/etc/yum.repos.d/mssql-release.repo"])
+# time.sleep(2)   
+# subprocess.call(["exit"])
 
-for y in yumPackages:
-    subprocess.call(["sudo", "yum", "install", "-y", y])
+# for y in yumPackages:
+#     subprocess.call(["sudo", "yum", "install", "-y", y])
 
-for p in pipPackages:
-    subprocess.call(["python3", "-m", "pip", "install", p])
+# for p in pipPackages:
+#     subprocess.call(["python3", "-m", "pip", "install", p])
 
-shutil.copy(source_file, l)
-        print("Copied " + source_file + " to " + l)
+# shutil.copy(source_file, l)
+#         print("Copied " + source_file + " to " + l)
 
 # if osDist == "centos":
 #     repo_url = 'https://packages.microsoft.com/config/centos/' + os_number + '/prod.repo'
