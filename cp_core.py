@@ -24,9 +24,12 @@ loc5 = (os.path.join(incorta_home, "IncortaNode/runtime/webapps/incorta/WEB-INF/
 locations = [loc1,loc2,loc3,loc4,loc5]
 
 #copy files
-for l in locations:
-    try:
-        shutil.copy(source_file, l)
-        print("Copied " + source_file + " to " + l)
-    except:
-        print("Error occurred while copying file: " + l)
+def cp_Core():
+    for l in locations:
+        try:
+            shutil.copy(source_file, l)
+            print("Copied " + source_file + " to " + l)
+        except:
+            print("Error occurred while copying file: " + l)
+
+cp_Core()
