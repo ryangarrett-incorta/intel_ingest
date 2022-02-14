@@ -83,7 +83,7 @@ def start_All():
     start_Loader(file_args)   
     start_Spark()
     
-def restart_All():
+def restart_All(args):
     stop_All()
     start_All()
 

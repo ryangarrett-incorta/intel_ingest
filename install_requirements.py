@@ -9,10 +9,15 @@ import shutil
 import time
 import glob
 import re
+import argparse
 import stop_all_incorta_services
-# import cp_core
 
 incorta_home = os.getenv('INCORTA_HOME')
+parser = argparse.ArgumentParser(description='Incorta copy core-site.xml.  Usage: cp_core.py source_xml')
+parser.add_argument('source_file', type=str, help='Path to Input File example: /home/core-site.xml')
+args = parser.parse_args()
+source_file_arg = args.source_file.split(",")
+source_file = os.path.join(*source_file_arg)
 
 # set intelligent.ingest.enabled
 services_index = (os.path.join(incorta_home, "IncortaNode/services/services.index"))
@@ -92,8 +97,24 @@ egg_file_path = (os.path.join(incorta_home, "IncortaNode/incorta.ml/lib"))
 shutil.copy(egg_file_str,egg_file_path)
 print("Copied " + egg_file_str + " to " + egg_file_path)
 
+# cp core_site.xml
+loc1 = (os.path.join(incorta_home, "cmc/lib/"))
+loc2 = (os.path.join(incorta_home, "cmc/tmt/"))
+loc3 = (os.path.join(incorta_home, "IncortaNode/hadoop/etc/hadoop/"))
+loc4 = (os.path.join(incorta_home, "IncortaNode/runtime/lib/"))
+loc5 = (os.path.join(incorta_home, "IncortaNode/runtime/webapps/incorta/WEB-INF/lib/"))
+
+#locations array
+locations = [loc1,loc2,loc3,loc4,loc5]
+for l in locations:
+    try:
+        shutil.copy(source_file, l)
+        print("Copied " + source_file + " to " + l)
+    except:
+        print("Error occurred while copying file: " + l)
+
 # Restart Services
 print("Restarting All Incorta services")
 args = 'restart'
-stop_all_incorta_services.restart_All()
+stop_all_incorta_services.restart_All(args)
     
