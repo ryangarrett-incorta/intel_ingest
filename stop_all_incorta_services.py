@@ -5,15 +5,7 @@ import os
 import subprocess
 import argparse
 
-parser = argparse.ArgumentParser(description='Stop.Start.Restart Incorta Services  Assumes $INCORTA_HOME is set Usage: stop_all_incorta_services.py --stop')
-parser.add_argument('-s','--stop', action="store_true", help='Stop All Services')
-parser.add_argument('-t','--start', action="store_true", help='Start All Services')
-parser.add_argument('-r','--restart', action="store_true", help='Restart All Services')
-
-args = vars(parser.parse_args())
-
 incorta_home = os.getenv('INCORTA_HOME')
-file_args = ""
 
 def stop_Spark():
     stopSpark = (os.path.join(incorta_home, "IncortaNode/stopSpark.sh"))
@@ -25,25 +17,25 @@ def start_Spark():
     print("Starting Spark Services ..." )
     subprocess.call([startSpark])    
 
-def stop_Loader(file_args):
+def stop_Loader():
     stopLoader = (os.path.join(incorta_home, "IncortaNode/stopService.sh"))
     file_args = "loaderService"
     print("Stopping Loader Services ..." )
     subprocess.call([stopLoader,file_args])
  
-def start_Loader(file_args):
+def start_Loader():
     startLoader = (os.path.join(incorta_home, "IncortaNode/startService.sh"))
     file_args = "loaderService"
     print("Starting Loader Services ..." )
     subprocess.call([startLoader,file_args])
 
-def stop_Analytics(file_args):
+def stop_Analytics():
     stopAnalytics = (os.path.join(incorta_home, "IncortaNode/stopService.sh"))
     file_args = "analyticsService"
     print("Stopping Analytics Services ..." )
     subprocess.call([stopAnalytics,file_args])
 
-def start_Analytics(file_args):
+def start_Analytics():
     startAnalytics = (os.path.join(incorta_home, "IncortaNode/startService.sh"))
     file_args = "analyticsService"
     print("Starting Analytics Services ..." )
@@ -72,29 +64,37 @@ def start_CMC():
 def stop_All():
     stop_CMC()
     stop_Node()
-    stop_Analytics(file_args)
-    stop_Loader(file_args)
+    stop_Analytics()
+    stop_Loader()
     stop_Spark()
     
 def start_All():
     start_CMC()
     start_Node()
-    start_Analytics(file_args)    
-    start_Loader(file_args)   
+    start_Analytics()    
+    start_Loader()   
     start_Spark()
     
-def restart_All(args):
+def restart_All():
     stop_All()
     start_All()
 
-if (args['stop']):
-    stop_All()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Stop.Start.Restart Incorta Services  Assumes $INCORTA_HOME is set Usage: stop_all_incorta_services.py --stop')
+    parser.add_argument('-s','--stop', action="store_true", help='Stop All Services')
+    parser.add_argument('-t','--start', action="store_true", help='Start All Services')
+    parser.add_argument('-r','--restart', action="store_true", help='Restart All Services')
 
-elif (args['start']):
-    start_All()
+    args = vars(parser.parse_args())
 
-elif (args['restart']):
-    restart_All()
+    if (args['stop']):
+        stop_All()
 
-else:
-    print ("Please check your flags & Try Again.  Example Usage /home/install_files/stop_all_incorta_services.py -s")
+    elif (args['start']):
+        start_All()
+
+    elif (args['restart']):
+        restart_All()
+
+    else:
+        print ("Please check your flags & Try Again.  Example Usage /home/install_files/stop_all_incorta_services.py -s")

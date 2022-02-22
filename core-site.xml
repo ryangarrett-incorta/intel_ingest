@@ -1,0 +1,22 @@
+<configuration>
+    <property>
+        <name>fs.azure.account.auth.type</name>
+        <value>OAuth</value>
+    </property>
+    <property>
+        <name>fs.azure.account.oauth.provider.type</name>
+        <value>org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider</value>
+    </property>
+    <property>
+        <name>fs.azure.account.oauth2.client.endpoint</name>
+        <value>https://login.microsoftonline.com/xxx/oauth2/token</value>
+    </property>
+    <property>
+        <name>fs.azure.account.oauth2.client.id</name>
+        <value>xxx</value>
+    </property>
+    <property>
+        <name>fs.azure.account.oauth2.client.secret</name>
+        <value>xxx</value>
+    </property>
+</configuration>

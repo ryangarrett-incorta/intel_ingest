@@ -13,8 +13,16 @@ import argparse
 import stop_all_incorta_services
 
 incorta_home = os.getenv('INCORTA_HOME')
+
+if incorta_home is None:
+    print("Please set INCORTA_HOME in bashrc.... Exiting script")
+    exit(1)
+else:
+    print("INCORTA_HOME = " + incorta_home)
+
 parser = argparse.ArgumentParser(description='Incorta copy core-site.xml.  Usage: cp_core.py source_xml')
 parser.add_argument('source_file', type=str, help='Path to Input File example: /home/core-site.xml')
+
 args = parser.parse_args()
 source_file_arg = args.source_file.split(",")
 source_file = os.path.join(*source_file_arg)
@@ -62,10 +70,9 @@ fileObj = open(filePip)
 pipPackages = fileObj.read().splitlines()
 fileObj.close()
 
-subprocess.call(["pip", "install", "--upgrade", "pip"])
+subprocess.call(["pip3", "install", "--upgrade", "pip"])
 subprocess.call(["sudo", "yum", "remove", "unixODBC-utf16-devel"])
 subprocess.call(["sudo", "ACCEPT_EULA=Y", "yum", "install", "-y", "msodbcsql17"])
-subprocess.call(["sudo", "su", "-"])
 
 for y in yumPackages:
     subprocess.call(["sudo", "yum", "install", "-y", y])
@@ -113,8 +120,5 @@ for l in locations:
     except:
         print("Error occurred while copying file: " + l)
 
-# Restart Services
-print("Restarting All Incorta services")
-args = 'restart'
-stop_all_incorta_services.restart_All(args)
+stop_all_incorta_services.restart_All()
     

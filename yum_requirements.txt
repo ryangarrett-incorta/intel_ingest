@@ -1,6 +1,7 @@
+python3-wheel
 epel-release
+python3-pip
 postgresql-devel
-python3-pip 
 gcc-c++ 
 python3-devel 
 unixODBC-devel
