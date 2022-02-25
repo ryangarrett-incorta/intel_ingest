@@ -33,15 +33,20 @@ services_index = (os.path.join(incorta_home, "IncortaNode/services/services.inde
 with open(services_index) as f:
     lines = f.readlines()
 
-analyticsService = lines[0]
-analyticsService_Id = re.sub('.*=', '', analyticsService).strip()
-analytics_file = (os.path.join(incorta_home, "IncortaNode/services/", analyticsService_Id, "incorta/service.properties"))
+if len(lines) == 0:
+    print("No Analytics or Loader Services found, please create loader and analytcis services.... Exiting")
+    exit(1)
 
-loaderService = lines[1]
-loaderService_Id = re.sub('.*=', '', loaderService).strip()
-loader_file = (os.path.join(incorta_home, "IncortaNode/services/", loaderService_Id, "incorta/service.properties"))
+else:
+    analyticsService = lines[0]
+    analyticsService_Id = re.sub('.*=', '', analyticsService).strip()
+    analytics_file = (os.path.join(incorta_home, "IncortaNode/services/", analyticsService_Id, "incorta/service.properties"))
 
-service_files = [analytics_file,loader_file]
+    loaderService = lines[1]
+    loaderService_Id = re.sub('.*=', '', loaderService).strip()
+    loader_file = (os.path.join(incorta_home, "IncortaNode/services/", loaderService_Id, "incorta/service.properties"))
+
+    service_files = [analytics_file,loader_file]
 
 for s in service_files:
     with open(s, "a") as file_object:
@@ -77,8 +82,8 @@ subprocess.call(["sudo", "ACCEPT_EULA=Y", "yum", "install", "-y", "msodbcsql17"]
 for y in yumPackages:
     subprocess.call(["sudo", "yum", "install", "-y", y])
 
-for p in pipPackages:
-    subprocess.call(["python3", "-m", "pip", "install", p])
+# for p in pipPackages:
+#     subprocess.call(["python3", "-m", "pip", "install", p])
 
 # create syn folders
 syn_path = (os.path.join(incorta_home, "IncortaNode/syn/"))
