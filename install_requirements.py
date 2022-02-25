@@ -39,24 +39,19 @@ if len(lines) == 0:
 else:
     pass
 
-analyticsServices = []
-loaderServices = []
+# analyticsServices = []
+# loaderServices = []
+servicesID = []
 
 for l in lines:
-    if 'analytics' in str(l):
-        analyticsService_Id = re.sub('.*=', '', l).strip()
-        analytics_file = (os.path.join(incorta_home, "IncortaNode/services/", analyticsService_Id, "incorta/service.properties"))
-        analyticsServices.append(analytics_file)
-    elif 'loader' in str(l):
-        loaderService_Id = re.sub('.*=', '', l).strip()
-        loader_file = (os.path.join(incorta_home, "IncortaNode/services/", loaderService_Id, "incorta/service.properties"))
-        loaderServices.append(loader_file)
+    if '=' in str(l):
+        services = re.sub('.*=', '', l).strip() 
+        servicesFile = (os.path.join(incorta_home, "IncortaNode/services/", services, "incorta/service.properties"))
+        servicesID.append(servicesFile)
     else:
         pass
-
-service_files = analyticsServices + loaderServices
-
-for s in service_files:
+        
+for s in servicesID:
     with open(s, "r") as file_object:
         if 'intelligent.ingest.enabled = true' in file_object.read():
             print ("intel ingest already enabled on ", s)
@@ -97,15 +92,16 @@ fileObj = open(filePip)
 pipPackages = fileObj.read().splitlines()
 fileObj.close()
 
-subprocess.call(["pip3", "install", "--upgrade", "pip"])
-subprocess.call(["sudo", "yum", "remove", "unixODBC-utf16-devel"])
-subprocess.call(["sudo", "ACCEPT_EULA=Y", "yum", "install", "-y", "msodbcsql17"])
-
 for y in yumPackages:
     subprocess.call(["sudo", "yum", "install", "-y", y])
 
-# for p in pipPackages:
-#     subprocess.call(["python3", "-m", "pip", "install", p])
+subprocess.call(["pip3", "install", "--upgrade", "pip"])
+subprocess.call(["pip3", "install", "--user", "pyodbc"])
+subprocess.call(["sudo", "yum", "remove", "unixODBC-utf16-devel"])
+subprocess.call(["sudo", "ACCEPT_EULA=Y", "yum", "install", "-y", "msodbcsql17"])
+
+for p in pipPackages:
+    subprocess.call(["python3", "-m", "pip", "install", p])
 
 # create syn folders
 syn_path = (os.path.join(incorta_home, "IncortaNode/syn/"))

@@ -1,6 +1,11 @@
-python3-wheel
 epel-release
+libiodbc2-dev
+python-devel
+gcc
+glibc
+make
 python3-pip
+python3-wheel
 postgresql-devel
 gcc-c++ 
 python3-devel 
