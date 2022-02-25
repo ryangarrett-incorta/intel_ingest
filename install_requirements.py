@@ -31,26 +31,48 @@ source_file = os.path.join(*source_file_arg)
 services_index = (os.path.join(incorta_home, "IncortaNode/services/services.index"))
 
 with open(services_index) as f:
-    lines = f.readlines()
+    lines = f.readlines() 
 
 if len(lines) == 0:
-    print("No Analytics or Loader Services found, please create loader and analytcis services.... Exiting")
-    exit(1)
-
+     print("No Analytics or Loader Services found, please create loader and analytcis services.... Exiting")
+     exit(1)
 else:
-    analyticsService = lines[0]
-    analyticsService_Id = re.sub('.*=', '', analyticsService).strip()
-    analytics_file = (os.path.join(incorta_home, "IncortaNode/services/", analyticsService_Id, "incorta/service.properties"))
+    pass
 
-    loaderService = lines[1]
-    loaderService_Id = re.sub('.*=', '', loaderService).strip()
-    loader_file = (os.path.join(incorta_home, "IncortaNode/services/", loaderService_Id, "incorta/service.properties"))
+analyticsServices = []
+loaderServices = []
 
-    service_files = [analytics_file,loader_file]
+for l in lines:
+    if 'analytics' in str(l):
+        analyticsService_Id = re.sub('.*=', '', l).strip()
+        analytics_file = (os.path.join(incorta_home, "IncortaNode/services/", analyticsService_Id, "incorta/service.properties"))
+        analyticsServices.append(analytics_file)
+    elif 'loader' in str(l):
+        loaderService_Id = re.sub('.*=', '', l).strip()
+        loader_file = (os.path.join(incorta_home, "IncortaNode/services/", loaderService_Id, "incorta/service.properties"))
+        loaderServices.append(loader_file)
+    else:
+        pass
+
+service_files = analyticsServices + loaderServices
 
 for s in service_files:
-    with open(s, "a") as file_object:
-        file_object.write("intelligent.ingest.enabled = true")
+    with open(s, "r") as file_object:
+        if 'intelligent.ingest.enabled = true' in file_object.read():
+            print ("intel ingest already enabled on ", s)
+        elif 'intelligent.ingest.enabled = false' in file_object.read():
+            lines = file_object.readlines()
+            print("false", s)
+            # with open(s, "w") as fo:
+            #     for line in lines:
+            #         if line.strip("\n") != "intelligent.ingest.enabled = false":
+            #             fo.write(line)
+            # file_object.write("intelligent.ingest.enabled = true")
+            # print ("intel ingest set to false on ", s)
+        else:
+            with open(s, "a") as file_object:
+                file_object.write("intelligent.ingest.enabled = true")
+                print("intelligent ingest enabled on ", s)
 
 # cp ms repo path
 ms_repo_file = glob.glob('./*.repo')
