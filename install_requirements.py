@@ -38,9 +38,7 @@ if len(lines) == 0:
      exit(1)
 else:
     pass
-
-# analyticsServices = []
-# loaderServices = []
+    
 servicesID = []
 
 for l in lines:
