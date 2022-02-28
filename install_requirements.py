@@ -56,6 +56,7 @@ for s in servicesID:
         if 'intelligent.ingest.enabled = true' in file_object.read():
             print ("intel ingest already enabled on ", s)
         elif 'intelligent.ingest.enabled = false' in file_object.read():
+            print ("intel ingest set to false on, please set this manually ", s)
             lines = file_object.readlines()
             print("false", s)
             # with open(s, "w") as fo:
