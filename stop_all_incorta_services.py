@@ -4,8 +4,27 @@
 import os
 import subprocess
 import argparse
+import re
 
 incorta_home = os.getenv('INCORTA_HOME')
+
+#get service names
+services_index = (os.path.join(incorta_home, "IncortaNode/services/services.index"))
+
+with open(services_index) as f:
+    lines = f.readlines() 
+if len(lines) == 0:
+     print("No Analytics or Loader Services found, please create loader and analytcis services")
+else:
+    pass
+
+serviceNames = []
+for l in lines:
+    if '=' in str(l):
+        services = re.sub('=.*', '', l).strip() 
+        serviceNames.append(services)
+    else:
+        pass
 
 def stop_Spark():
     stopSpark = (os.path.join(incorta_home, "IncortaNode/stopSpark.sh"))
@@ -15,31 +34,19 @@ def stop_Spark():
 def start_Spark():
     startSpark = (os.path.join(incorta_home, "IncortaNode/startSpark.sh"))
     print("Starting Spark Services ..." )
-    subprocess.call([startSpark])    
+    subprocess.call([startSpark]) 
 
-def stop_Loader():
-    stopLoader = (os.path.join(incorta_home, "IncortaNode/stopService.sh"))
-    file_args = "loaderService"
-    print("Stopping Loader Services ..." )
-    subprocess.call([stopLoader,file_args])
- 
-def start_Loader():
-    startLoader = (os.path.join(incorta_home, "IncortaNode/startService.sh"))
-    file_args = "loaderService"
-    print("Starting Loader Services ..." )
-    subprocess.call([startLoader,file_args])
+def stop_Services():
+    stopServices = (os.path.join(incorta_home, "IncortaNode/stopService.sh"))
+    for s in serviceNames:
+        print("Stopping ",s)
+        subprocess.call([stopServices,s,"-force"])
 
-def stop_Analytics():
-    stopAnalytics = (os.path.join(incorta_home, "IncortaNode/stopService.sh"))
-    file_args = "analyticsService"
-    print("Stopping Analytics Services ..." )
-    subprocess.call([stopAnalytics,file_args])
-
-def start_Analytics():
-    startAnalytics = (os.path.join(incorta_home, "IncortaNode/startService.sh"))
-    file_args = "analyticsService"
-    print("Starting Analytics Services ..." )
-    subprocess.call([startAnalytics,file_args])
+def start_Services():
+    startServices = (os.path.join(incorta_home, "IncortaNode/startService.sh"))
+    for s in serviceNames:
+        print("Starting ",s)
+        subprocess.call([startServices,s])
     
 def stop_Node():
     stopNode = (os.path.join(incorta_home, "IncortaNode/stopNode.sh"))
@@ -64,15 +71,13 @@ def start_CMC():
 def stop_All():
     stop_CMC()
     stop_Node()
-    stop_Analytics()
-    stop_Loader()
+    stop_Services()
     stop_Spark()
     
 def start_All():
     start_CMC()
     start_Node()
-    start_Analytics()    
-    start_Loader()   
+    start_Services()   
     start_Spark()
     
 def restart_All():
