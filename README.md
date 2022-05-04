@@ -2,8 +2,9 @@
  Setup requirements for Incorta Intelligent Ingest
 
  #prequisites
- Incorta 5.14 Installed
- Java home set
+ Incorta 5.14 min Installed
+ JAVA_HOME set
+ Incorta Analytics Services created
 
  vi ~/.baschrc
 export INCORTA_HOME=/home/incorta/IncortaAnalytics/
