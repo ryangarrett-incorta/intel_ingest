@@ -3,9 +3,12 @@
 
  # prequisites
 
- -Incorta 5.14 min Installed
+ -Incorta 5.14 installed
+
  -JAVA_HOME set
+
  -Incorta Analytics & Loader Services created
+
  -core-site.xml file in the installer completed with your specific Azure details before running installer
 
  vi ~/.baschrc
