@@ -4,10 +4,9 @@
  # prequisites
 
  -Incorta 5.14 min Installed
-
  -JAVA_HOME set
-
  -Incorta Analytics & Loader Services created
+ -core-site.xml file in the installer completed with your specific Azure details before running installer
 
  vi ~/.baschrc
 export INCORTA_HOME=/home/incorta/IncortaAnalytics/
