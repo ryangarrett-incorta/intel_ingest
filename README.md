@@ -11,6 +11,7 @@
 
  -core-site.xml file in the installer completed with your specific Azure details before running installer
 
+# How to run
  vi ~/.baschrc
 export INCORTA_HOME=/home/incorta/IncortaAnalytics/
 
