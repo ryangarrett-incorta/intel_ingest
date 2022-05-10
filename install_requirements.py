@@ -12,7 +12,17 @@ import re
 import argparse
 import stop_all_incorta_services
 
-incorta_home = os.getenv('INCORTA_HOME')
+os_distribution = platform.linux_distribution()
+os_type = os_distribution[0]
+os_version = os_distribution[1]
+os_build = os_version[0]
+os_system = platform.system()
+
+if 'Linux' in os_system:
+    pass
+else:
+    print("Not supported OS.... Exiting script")
+    exit(1)
 
 if incorta_home is None:
     print("Please set INCORTA_HOME in bashrc.... Exiting script")
@@ -79,6 +89,10 @@ try:
 except PermissionError:
     subprocess.call(['sudo', 'cp', '{0}'.format(ms_repo_file_str), '{0}'.format(ms_repo_path)])
     print("Sudo Copied " + ms_repo_file_str + " to " + ms_repo_path)
+
+# set epel repo
+epel_link = "https://dl.fedoraproject.org/pub/epel/epel-release-latest-" + os_build + ".noarch.rpm"
+subprocess.call(["sudo", "dnf", "install", epel_link, "-y"])
 
 # install yum and pip requirements
 fileYum = "yum_requirements.txt"
