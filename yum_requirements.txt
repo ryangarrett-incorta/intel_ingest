@@ -1,5 +1,4 @@
 epel-release
-libiodbc2-dev
 python3-devel
 gcc
 glibc
