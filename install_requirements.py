@@ -12,6 +12,8 @@ import re
 import argparse
 import stop_all_incorta_services
 
+incorta_home = os.getenv('INCORTA_HOME')
+
 os_distribution = platform.linux_distribution()
 os_type = os_distribution[0]
 os_version = os_distribution[1]
