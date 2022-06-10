@@ -159,12 +159,12 @@ for l in locations:
         print("Error occurred while copying file: " + l)
 
 # remove wildfly 1.0.4
-wildfly_loc = (os.path.join(incorta_home, "IncortaNode/hadoop/etc/hadoop/share/hadoop/tools/lib/wildfly-openssl-1.0.4.Final.jar"))
-try:
-    os.remove(wildfly_loc)
-    print(wildfly_loc + " Deleted")
-except:
-    print ("wildfly 1.0.4 not found")
+# wildfly_loc = (os.path.join(incorta_home, "IncortaNode/hadoop/etc/hadoop/share/hadoop/tools/lib/wildfly-openssl-1.0.4.Final.jar"))
+# try:
+#     os.remove(wildfly_loc)
+#     print(wildfly_loc + " Deleted")
+# except:
+#     print ("wildfly 1.0.4 not found")
 
 stop_all_incorta_services.restart_All()
     
