@@ -1,2 +1,1 @@
-﻿schema_name,table_name,hash_column
-EXAMPLE,EXAMPLE,EXAMPLE
+﻿schema_name.table_name,hash_column
