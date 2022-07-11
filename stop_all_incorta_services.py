@@ -10,6 +10,7 @@ incorta_home = os.getenv('INCORTA_HOME')
 
 #get service names
 services_index = (os.path.join(incorta_home, "IncortaNode/services/services.index"))
+#services_notebook = (os.path.join(incorta_home, "IncortaNode/notebooks/services/services.index"))
 
 with open(services_index) as f:
     lines = f.readlines() 
@@ -47,6 +48,18 @@ def start_Services():
     for s in serviceNames:
         print("Starting ",s)
         subprocess.call([startServices,s])
+
+# def stop_Notebook():
+#     stop_Notebook = (os.path.join(incorta_home, "IncortaNode/stopNotebook.sh"))
+#     for s in serviceNames:
+#         print("Stopping ",s)
+#         subprocess.call([stopServices,s,"-force"])
+
+# def start_Notebook():
+#     startNotebook = (os.path.join(incorta_home, "IncortaNode/startNotebook.sh"))
+#     for s in serviceNames:
+#         print("Starting ",s)
+#         subprocess.call([startServices,s])
     
 def stop_Node():
     stopNode = (os.path.join(incorta_home, "IncortaNode/stopNode.sh"))
