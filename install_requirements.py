@@ -95,6 +95,12 @@ except PermissionError:
 # set epel repo
 epel_link = "https://dl.fedoraproject.org/pub/epel/epel-release-latest-" + os_build + ".noarch.rpm"
 subprocess.call(["sudo", "dnf", "install", epel_link, "-y"])
+print("Setting epel to " +  epel_link)
+
+subprocess.call(["pip3", "install", "--upgrade", "pip"])
+subprocess.call(["pip3", "install", "--user", "pyodbc"])
+subprocess.call(["sudo", "yum", "remove", "unixODBC-utf16-devel"])
+subprocess.call(["sudo", "ACCEPT_EULA=Y", "yum", "install", "-y", "msodbcsql17"])
 
 # install yum and pip requirements
 fileYum = "yum_requirements.txt"
@@ -110,13 +116,13 @@ fileObj.close()
 for y in yumPackages:
     subprocess.call(["sudo", "yum", "install", "-y", y])
 
-subprocess.call(["pip3", "install", "--upgrade", "pip"])
-subprocess.call(["pip3", "install", "--user", "pyodbc"])
-subprocess.call(["sudo", "yum", "remove", "unixODBC-utf16-devel"])
-subprocess.call(["sudo", "ACCEPT_EULA=Y", "yum", "install", "-y", "msodbcsql17"])
-
 for p in pipPackages:
     subprocess.call(["python3", "-m", "pip", "install", p])
+
+print("Installing Incorta Ingest Wheel")
+incorta_wheel_path = (os.path.join(incorta_home, "IncortaNode/Synapse/pkg/*.whl"))
+incorta_wheel = glob.glob(incorta_wheel_path)
+subprocess.call(["python3", "-m", "pip", "install", incorta_wheel[0]])
 
 # create syn folders
 syn_path = (os.path.join(incorta_home, "IncortaNode/syn/"))
@@ -134,14 +140,6 @@ except FileExistsError:
 shutil.copy(synapse_mappings,syn_path)
 print("Copied " + synapse_mappings + " to " + syn_path)
 
-# copy egg file
-egg_file = glob.glob('./*.egg')
-egg_file_str = egg_file[0]
-egg_file_path = (os.path.join(incorta_home, "IncortaNode/incorta.ml/lib"))
-
-shutil.copy(egg_file_str,egg_file_path)
-print("Copied " + egg_file_str + " to " + egg_file_path)
-
 # cp core_site.xml
 loc1 = (os.path.join(incorta_home, "cmc/lib/"))
 loc2 = (os.path.join(incorta_home, "cmc/tmt/"))
@@ -158,13 +156,27 @@ for l in locations:
     except:
         print("Error occurred while copying file: " + l)
 
-# remove wildfly 1.0.4
-# wildfly_loc = (os.path.join(incorta_home, "IncortaNode/hadoop/etc/hadoop/share/hadoop/tools/lib/wildfly-openssl-1.0.4.Final.jar"))
-# try:
-#     os.remove(wildfly_loc)
-#     print(wildfly_loc + " Deleted")
-# except:
-#     print ("wildfly 1.0.4 not found")
+remove wildfly 1.0.4
+if '8' in os_build:
+    wildfly107 = (os.path.join(incorta_home, "IncortaNode/runtime/webapps/incorta/WEB-INF/lib/wildfly-openssl-1.0.7.Final.jar"))
+    wildfly104 = (os.path.join(incorta_home, "IncortaNode/hadoop/share/hadoop/tools/lib/wildfly-openssl-1.0.4.Final.jar"))
+    wildfly_loc = (os.path.join(incorta_home, "IncortaNode/hadoop/share/hadoop/tools/lib"))
+    try:
+        shutil.copy(wildfly107, wildfly_loc)
+        os.chmod((os.path.join(wildfly_loc, "wildfly-openssl-1.0.7.Final.jar")), 777)
+        print("Copied " + wildfly107 + " to " + wildfly_loc)
+    except:
+         print("Error occurred while copying file: " + wildfly107)
+    try:
+        os.remove(wildfly104)
+        print(wildfly104 + " Deleted")
+    except:
+        print ("wildfly 1.0.4 not found")
+
+print("Setting INCORTA_USE_AZURE_APIS=true")
+with open(os.path.expanduser("~/.bashrc"), "a") as outfile:  
+    outfile.write("export INCORTA_USE_AZURE_APIS=true")
+os.system("source ~/.bashrc")
 
 stop_all_incorta_services.restart_All()
     

@@ -1,10 +1,1 @@
 pyodbc
-psycopg2
-pandas
-PyPI
-pyarrow
-azure-storage-file-datalake
-azure-identity
-uuid
-csv-logger
-dataclasses
