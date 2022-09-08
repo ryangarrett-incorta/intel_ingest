@@ -124,22 +124,6 @@ incorta_wheel_path = (os.path.join(incorta_home, "IncortaNode/Synapse/pkg/*.whl"
 incorta_wheel = glob.glob(incorta_wheel_path)
 subprocess.call(["python3", "-m", "pip", "install", incorta_wheel[0]])
 
-# create syn folders
-syn_path = (os.path.join(incorta_home, "IncortaNode/syn/"))
-syn_logpath = (os.path.join(incorta_home, "IncortaNode/syn/logs"))
-synapse_mappings = "./synapse_mappings.csv"
-
-try:
-    os.makedirs(syn_logpath)
-    print ("syn path created: ", syn_logpath)
-except FileExistsError:
-    print ("Synpath previosly created, skipping")
-    pass
-
-# copy synapse mapping
-shutil.copy(synapse_mappings,syn_path)
-print("Copied " + synapse_mappings + " to " + syn_path)
-
 # cp core_site.xml
 loc1 = (os.path.join(incorta_home, "cmc/lib/"))
 loc2 = (os.path.join(incorta_home, "cmc/tmt/"))
@@ -156,7 +140,7 @@ for l in locations:
     except:
         print("Error occurred while copying file: " + l)
 
-remove wildfly 1.0.4
+#remove wildfly 1.0.4
 if '8' in os_build:
     wildfly107 = (os.path.join(incorta_home, "IncortaNode/runtime/webapps/incorta/WEB-INF/lib/wildfly-openssl-1.0.7.Final.jar"))
     wildfly104 = (os.path.join(incorta_home, "IncortaNode/hadoop/share/hadoop/tools/lib/wildfly-openssl-1.0.4.Final.jar"))
