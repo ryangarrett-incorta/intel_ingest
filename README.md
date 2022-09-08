@@ -3,7 +3,7 @@
 
  # prequisites
 
- -Incorta 5.14 installed
+ -Incorta 5.22 installed
 
  -JAVA_HOME set
 
