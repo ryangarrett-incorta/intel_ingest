@@ -13,7 +13,8 @@
 
 # How to run
  vi ~/.baschrc
-export INCORTA_HOME=/home/incorta/IncortaAnalytics/
+
+add to bashrc with your home directory example:  export INCORTA_HOME=/home/incorta/IncortaAnalytics/
 
 source ~/.baschrc
 
