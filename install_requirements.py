@@ -162,5 +162,6 @@ with open(os.path.expanduser("~/.bashrc"), "a") as outfile:
     outfile.write("export INCORTA_USE_AZURE_APIS=true")
 os.system("source ~/.bashrc")
 
+print ("Restarting All Incorta Services")
 stop_all_incorta_services.restart_All()
     
